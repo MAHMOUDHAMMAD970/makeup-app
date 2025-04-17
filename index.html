@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Particle Background + Drag Image</title>
+  <title>Interactive Luma Page</title>
   <style>
     html, body {
       margin: 0;
@@ -13,11 +13,30 @@
     }
     canvas {
       display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+    #nextBtn {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1;
+      background-color: #007bff;
+      color: white;
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
+  <button id="nextBtn" onclick="goToNextPage()">Next Page</button>
 
   <script>
     const canvas = document.getElementById('canvas');
@@ -26,7 +45,7 @@
     let particles = [];
     let imgLoaded = false;
     let image = new Image();
-    image.src = "images/lotion.png";
+    image.src = "images/lotino.png";
 
     let imgX = 200, imgY = 200;
     let imgW = 200, imgH = 200;
@@ -58,7 +77,6 @@
       update() {
         this.x += this.vx;
         this.y += this.vy;
-
         if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
           this.reset();
         }
@@ -120,6 +138,10 @@
       isDragging = false;
     }
 
+    function goToNextPage() {
+      window.location.href = "next.html";
+    }
+
     canvas.addEventListener("mousedown", startDrag);
     canvas.addEventListener("mousemove", drag);
     canvas.addEventListener("mouseup", endDrag);
@@ -129,17 +151,14 @@
     canvas.addEventListener("touchmove", drag, { passive: false });
     canvas.addEventListener("touchend", endDrag);
 
-    // Only start animation after image loads
     image.onload = function () {
-      console.log("Image loaded successfully.");
       imgLoaded = true;
       createParticles(200);
       animate();
     };
 
     image.onerror = function () {
-      console.error("Failed to load image. Check path: images/lotino.png");
-      alert("Image not found. Check your folder structure.");
+      alert("Image failed to load. Check 'images/lotino.png'.");
     };
   </script>
 </body>
