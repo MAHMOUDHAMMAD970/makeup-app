@@ -1,25 +1,42 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Makeup Product</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        button { padding: 10px 20px; margin: 20px; font-size: 16px; }
-        #options { display: none; margin-top: 30px; }
-    </style>
-    <script>
-        function showOptions() {
-            document.getElementById('options').style.display = 'block';
-        }
-    </script>
+  <meta charset="UTF-8">
+  <title>Makeup Product</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(-45deg, #f8d6e0, #e6f0ff, #f7e8c9, #d9f2dc);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .product-container {
+      z-index: 2;
+      max-width: 300px;
+    }
+
+    .product-container img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to Our Makeup Collection!</h1>
-    <button onclick="showOptions()">View Options</button>
-
-    <div id="options">
-        <h2>Select a Product</h2>
-        <p>Lipstick, Eyeshadow, Mascara</p>
-    </div>
+  <div class="product-container">
+    <img src="your-lotion-image.png" alt="Lotion Bottle">
+  </div>
 </body>
 </html>
