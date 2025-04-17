@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Particle Animation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Particle Background + Drag Image</title>
   <style>
     html, body {
       margin: 0;
@@ -11,7 +11,6 @@
       overflow: hidden;
       background: #000;
     }
-
     canvas {
       display: block;
     }
@@ -23,7 +22,15 @@
   <script>
     const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
+
     let particles = [];
+    let image = new Image();
+    image.src = "images/lotion.png";
+
+    let imgX = 200, imgY = 200;
+    let imgW = 200, imgH = 200;
+    let isDragging = false;
+    let offsetX, offsetY;
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -77,9 +84,51 @@
         particle.update();
         particle.draw();
       }
+      if (image.complete) {
+        ctx.drawImage(image, imgX, imgY, imgW, imgH);
+      }
       requestAnimationFrame(animate);
     }
 
+    // Touch & Mouse Controls
+    function isTouchOnImage(x, y) {
+      return x >= imgX && x <= imgX + imgW && y >= imgY && y <= imgY + imgH;
+    }
+
+    function startDrag(e) {
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const y = e.touches ? e.touches[0].clientY : e.clientY;
+      if (isTouchOnImage(x, y)) {
+        isDragging = true;
+        offsetX = x - imgX;
+        offsetY = y - imgY;
+      }
+    }
+
+    function drag(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      const y = e.touches ? e.touches[0].clientY : e.clientY;
+      imgX = x - offsetX;
+      imgY = y - offsetY;
+    }
+
+    function endDrag() {
+      isDragging = false;
+    }
+
+    // Events
+    canvas.addEventListener("mousedown", startDrag);
+    canvas.addEventListener("mousemove", drag);
+    canvas.addEventListener("mouseup", endDrag);
+    canvas.addEventListener("mouseleave", endDrag);
+
+    canvas.addEventListener("touchstart", startDrag, { passive: false });
+    canvas.addEventListener("touchmove", drag, { passive: false });
+    canvas.addEventListener("touchend", endDrag);
+
+    // Run
     createParticles(200);
     animate();
   </script>
