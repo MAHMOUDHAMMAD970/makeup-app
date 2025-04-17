@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interactive Luma Page</title>
+  <title>Interactive Lotion Page</title>
   <style>
     html, body {
       margin: 0;
@@ -11,32 +11,38 @@
       overflow: hidden;
       background: #000;
     }
-    canvas {
-      display: block;
+
+    #canvas {
       position: absolute;
       top: 0;
       left: 0;
       z-index: 0;
     }
+
     #nextBtn {
       position: absolute;
-      bottom: 30px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 1;
-      background-color: #007bff;
+      background-color: #00aaff;
       color: white;
-      padding: 15px 30px;
       font-size: 20px;
+      padding: 15px 30px;
       border: none;
       border-radius: 8px;
+      z-index: 10;
       cursor: pointer;
+      box-shadow: 0 0 10px #00aaff;
+    }
+
+    #nextBtn:hover {
+      background-color: #007acc;
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <button id="nextBtn" onclick="goToNextPage()">Next Page</button>
+  <button id="nextBtn" onclick="window.location.href='next.html'">Next Page</button>
 
   <script>
     const canvas = document.getElementById('canvas');
@@ -45,7 +51,7 @@
     let particles = [];
     let imgLoaded = false;
     let image = new Image();
-    image.src = "images/lotino.png";
+    image.src = "images/lotino.png";  // Make sure this image is present!
 
     let imgX = 200, imgY = 200;
     let imgW = 200, imgH = 200;
@@ -138,10 +144,6 @@
       isDragging = false;
     }
 
-    function goToNextPage() {
-      window.location.href = "next.html";
-    }
-
     canvas.addEventListener("mousedown", startDrag);
     canvas.addEventListener("mousemove", drag);
     canvas.addEventListener("mouseup", endDrag);
@@ -151,14 +153,14 @@
     canvas.addEventListener("touchmove", drag, { passive: false });
     canvas.addEventListener("touchend", endDrag);
 
-    image.onload = function () {
+    image.onload = () => {
       imgLoaded = true;
       createParticles(200);
       animate();
     };
 
-    image.onerror = function () {
-      alert("Image failed to load. Check 'images/lotino.png'.");
+    image.onerror = () => {
+      alert("Image not found! Make sure 'images/lotino.png' exists.");
     };
   </script>
 </body>
