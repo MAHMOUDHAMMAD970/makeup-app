@@ -24,6 +24,7 @@
     const ctx = canvas.getContext('2d');
 
     let particles = [];
+    let imgLoaded = false;
     let image = new Image();
     image.src = "images/lotion.png";
 
@@ -84,13 +85,14 @@
         particle.update();
         particle.draw();
       }
-      if (image.complete) {
+
+      if (imgLoaded) {
         ctx.drawImage(image, imgX, imgY, imgW, imgH);
       }
+
       requestAnimationFrame(animate);
     }
 
-    // Touch & Mouse Controls
     function isTouchOnImage(x, y) {
       return x >= imgX && x <= imgX + imgW && y >= imgY && y <= imgY + imgH;
     }
@@ -118,7 +120,6 @@
       isDragging = false;
     }
 
-    // Events
     canvas.addEventListener("mousedown", startDrag);
     canvas.addEventListener("mousemove", drag);
     canvas.addEventListener("mouseup", endDrag);
@@ -128,9 +129,18 @@
     canvas.addEventListener("touchmove", drag, { passive: false });
     canvas.addEventListener("touchend", endDrag);
 
-    // Run
-    createParticles(200);
-    animate();
+    // Only start animation after image loads
+    image.onload = function () {
+      console.log("Image loaded successfully.");
+      imgLoaded = true;
+      createParticles(200);
+      animate();
+    };
+
+    image.onerror = function () {
+      console.error("Failed to load image. Check path: images/lotino.png");
+      alert("Image not found. Check your folder structure.");
+    };
   </script>
 </body>
 </html>
